@@ -32,11 +32,11 @@ function ConvertHandler() {
       } else {
         var [numerator, denominator] = num.split('/');
         result = parseFloat(numerator) / parseFloat(denominator);
-        return result;
+        return +result;
       }
     }
     result = num;
-    return result;
+    return +result;
   };
   
   this.getUnit = function(input) {
@@ -56,42 +56,42 @@ function ConvertHandler() {
   this.getReturnUnit = function(initUnit) {
     var returnUnits = {
       'mi': 'km',
-      'gal': 'L',
+      'gal': 'l',
       'lbs': 'kg',
       'km': 'mi',
-      'L': 'gal',
-      'mi': 'km'
+      'l': 'gal',
+      'kg': 'lbs'
     };
 
-    return returnUnits[initUnit];
+    return returnUnits[initUnit.toLowerCase()];
   };
 
   this.spellOutUnit = function(unit) {
     var spelledOutUnits = {
       'mi': 'miles',
-      'km': 'kilometers',
-      'L': 'liters',
+      'l': 'liters',
       'gal': 'gallons',
       'lbs': 'pounds',
       'kg': 'kilograms',
+      'km': 'kilometers'
     };
     
-    return spelledOutUnits[unit];
+    return spelledOutUnits[unit.toLowerCase()];
   };
   
   this.convert = function(initNum, initUnit) {
     const galToL = 3.78541;
     const lbsToKg = 0.453592;
     const miToKm = 1.60934;
-    const UNIT_SIZE = 7;
+    //const UNIT_SIZE = 7;
 
-    switch (initUnit) {
-      case 'mi': return this.formatNum(initNum * miToKm, UNIT_SIZE);
-      case 'lbs': return this.formatNum(initNum * lbsToKg, UNIT_SIZE);
-      case 'gal': return this.formatNum(initNum * galToL, UNIT_SIZE);
-      case 'km': return this.formatNum(initNum / miToKm, UNIT_SIZE);
-      case 'kg': return this.formatNum(initNum / lbsToKg, UNIT_SIZE);
-      case 'L': return this.formatNum(initNum / galToL, UNIT_SIZE);
+    switch (initUnit.toLowerCase()) {
+      case 'mi': return +(initNum * miToKm).toFixed(4);
+      case 'lbs': return +(initNum * lbsToKg).toFixed(4);
+      case 'gal': return +(initNum * galToL).toFixed(4);
+      case 'km': return +(initNum / miToKm).toFixed(4);
+      case 'kg': return +(initNum / lbsToKg).toFixed(4);
+      case 'l': return +(initNum / galToL).toFixed(4);
       default: return false;
     }
   };
