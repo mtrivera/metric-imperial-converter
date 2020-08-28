@@ -63,7 +63,7 @@ function ConvertHandler() {
       'kg': 'lbs'
     };
 
-    return returnUnits[initUnit.toLowerCase()];
+    return returnUnits[initUnit.toLowerCase()] || 'invalid unit';
   };
 
   this.spellOutUnit = function(unit) {
@@ -85,6 +85,8 @@ function ConvertHandler() {
     const miToKm = 1.60934;
     //const UNIT_SIZE = 7;
 
+    // TODO: Check if initNum is a valid before convert
+    // TODO: Change switch statement to object literal
     switch (initUnit.toLowerCase()) {
       case 'mi': return +(initNum * miToKm).toFixed(4);
       case 'lbs': return +(initNum * lbsToKg).toFixed(4);
@@ -92,7 +94,7 @@ function ConvertHandler() {
       case 'km': return +(initNum / miToKm).toFixed(4);
       case 'kg': return +(initNum / lbsToKg).toFixed(4);
       case 'l': return +(initNum / galToL).toFixed(4);
-      default: return false;
+      default: return 'invalid unit';
     }
   };
   
