@@ -42,13 +42,19 @@ suite('Unit Tests', function(){
     
     test('Invalid Input (double fraction)', function(done) {
       var input = '2//6.3mi';
-      assert.equal(convertHandler.getNum(input), false);
+      assert.equal(convertHandler.getNum(input), 'invalid number');
       done();
     });
     
     test('No Numerical Input', function(done) {
       var input = 'mi';
       assert.equal(convertHandler.getNum(input), 1);
+      done();
+    });
+
+    test('Fractional input w/zero denominator', function(done) {
+      var input = '3/0mi';
+      assert.equal(convertHandler.getNum(input), 'Cannot divide by zero');
       done();
     });
     
@@ -66,7 +72,7 @@ suite('Unit Tests', function(){
     
     test('Unknown Unit Input', function(done) {
       var input = '3p';
-      assert.equal(convertHandler.getUnit(input), false);
+      assert.equal(convertHandler.getUnit(input), 'invalid unit');
       done();
     });
     
@@ -102,7 +108,7 @@ suite('Unit Tests', function(){
     
     test('Gal to L', function(done) {
       var [valInput, unitInput] = [5, 'gal'];
-      var expected = 18.9271;
+      var expected = 18.92705;
       assert.approximately(convertHandler.convert(valInput, unitInput),expected,0.1); //0.1 tolerance
       done();
     });
