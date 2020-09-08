@@ -40,9 +40,7 @@ suite('Functional Tests', function() {
         .end(function(err, res){
           assert.equal(res.status, 200);
           assert.equal(res.body.initNum, 32);
-          assert.equal(res.body.initUnit, 'g');
-          assert.equal(res.body.returnNum, 'invalid unit');
-          assert.equal(res.body.returnUnit, 'invalid unit');
+          assert.equal(res.body.initUnit, 'invalid unit');
           done();
         });
       });
@@ -53,10 +51,8 @@ suite('Functional Tests', function() {
         .query({input: '3/7.2/4kg'})
         .end(function(err, res){
           assert.equal(res.status, 200);
-          assert.equal(res.body.initNum, false);
+          assert.equal(res.body.initNum, 'invalid number');
           assert.equal(res.body.initUnit, 'kg');
-          assert.equal(res.body.returnNum, 0);
-          assert.equal(res.body.returnUnit, 'lbs');
           done();
         });
       });  
@@ -67,10 +63,8 @@ suite('Functional Tests', function() {
         .query({input: '3/7.2/4kilomegagram'})
         .end(function(err, res){
           assert.equal(res.status, 200);
-          assert.equal(res.body.initNum, false);
-          assert.equal(res.body.initUnit, 'kilomegagram');
-          assert.equal(res.body.returnNum, 'invalid unit');
-          assert.equal(res.body.returnUnit, 'invalid unit');
+          assert.equal(res.body.initNum, 'invalid number');
+          assert.equal(res.body.initUnit, 'invalid unit');
           done();
         });
       });
@@ -83,8 +77,20 @@ suite('Functional Tests', function() {
           assert.equal(res.status, 200);
           assert.equal(res.body.initNum, 1);
           assert.equal(res.body.initUnit, 'kg');
-          assert.equal(res.body.returnNum, 2.20460);
+          assert.equal(res.body.returnNum, 2.20462);
           assert.equal(res.body.returnUnit, 'lbs');
+          done();
+        });
+      });
+
+      test('Convert 3/0mi (Cannot divide by zero)', function(done) {
+        chai.request(server)
+        .get('/api/convert')
+        .query({input: '3/0mi'})
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.equal(res.body.initNum, 'Cannot divide by zero');
+          assert.equal(res.body.initUnit, 'mi');
           done();
         });
       });
